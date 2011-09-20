@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# chkconfig: - 92 5
+# description: logbot is an IRC bot 
+#
+
+bot=/opt/LogBot/run.sh
+PID=/opt/LogBot/logbot.pid
+
+# Source function library.
+. /etc/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ ${NETWORKING} = "no" ] && exit 0
+
+RETVAL="0"
+
+[ -x "$bot" ] || exit 0
+
+# See how we were called.
+case "$1" in
+  start)
+	echo -n "Starting Logbot: "
+	daemon --user=nobody --pidfile=${PID} ${bot}
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/logbot
+	;;
+  stop)
+	echo -n "Stopping logbot: "
+	killproc -p ${PID}
+	RETVAL=$?
+	echo
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/logbot
+	;;
+  status)
+	status -p ${PID} 
+	RETVAL=$?
+	;;
+  restart)
+	$0 status >/dev/null && $0 stop
+	$0 start
+	RETVAL=$?
+	;;
+#  condrestart)
+#	[ -f "/var/lock/subsys/logbot" ] && $0 restart || :
+#	RETVAL=$?
+#	echo
+#	;;
+#  reload)
+#	echo -n "Reloading logbot: "
+#	killproc -p ${PID} -HUP
+#	RETVAL=$?
+#	echo
+#	;;
+  *)
+	echo "Usage: $0 {start|stop|status|restart}"
+#|reload}"
+	exit 1
+esac
+
+exit $RETVAL
