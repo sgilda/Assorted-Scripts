@@ -1,0 +1,12 @@
+
+<variablelist>
+<% topics.each do |topic| %>
+   <varlistentry>
+      <term><%= topic["id"] %> - <%= topic["title"]%></term><% tags = topic["tags"] %><% tags["items"].each do |tag| %> 
+      <listitem><para><% categories = tag["categories"] %><% categories["items"].each do |category| %><%= category["name"] %><% end %> : <%= tag["name"] %></para></listitem><% end %>
+   </varlistentry>
+<% end %>
+</variablelist>
+
+
+

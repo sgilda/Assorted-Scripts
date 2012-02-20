@@ -1,0 +1,2 @@
+<% tags = topic["tags"] %>
+<% tags["items"].each do |tag| %> <% categories = tag["categories"] %><% categories["items"].each do |category| %><%= category["name"] %><% end %> : <%= tag["name"] %>,<% end %>
