@@ -10,6 +10,14 @@ end
 def getModuleName(path)
   moduleFile = REXML::Document.new(File.open(path))
   moduleElement = moduleFile.elements["/module"]
+
+  if moduleElement == nil then
+    moduleElement = moduleFile.elements["/module-alias"]
+  end
+
+  if moduleElement == nil then
+    return "ERROR"
+  end
   moduleName = moduleElement.attributes["name"]
   return moduleName
 end
@@ -17,6 +25,7 @@ end
 unsorted_modules = Array.new
 
 Find.find(ARGV[0]) do |path|
+
   if FileTest.directory?(path)
     if File.basename(path)[0] == ?.
       Find.prune       # Don't look any further into this directory.
