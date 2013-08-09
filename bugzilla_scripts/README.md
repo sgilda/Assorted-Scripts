@@ -1,3 +1,5 @@
+## bug_report.rb
+
 This script retreives the id, summary and status from bugs in the specified Bugzilla shared search.  It just sends them to stdout.  
 
 Just run the script with the required five parameters:
